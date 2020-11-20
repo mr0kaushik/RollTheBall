@@ -33,8 +33,10 @@ public class GameManager : MonoBehaviour
     public void GameStart()
     {
         // Debug.Log("Game Start");
-
         m_HasGameOver = false;
+        // Load First Scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+
     }
 
     public void GameOver()
@@ -82,6 +84,19 @@ public class GameManager : MonoBehaviour
             score = player.position.z;
             m_ScoreText.text = score.ToString("0");
         }
+    }
+
+
+
+    public void PlayAgain(){
+        Debug.Log("Play Again");
+
+        // SceneManager.LoadScene(SceneManager.GetActiveScene().);
+    }
+
+    public void Quit(){
+        Debug.Log("Quit");
+        Application.Quit();
     }
 }
 
