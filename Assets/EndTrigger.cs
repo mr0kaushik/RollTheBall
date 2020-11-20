@@ -19,10 +19,6 @@ public class EndTrigger : MonoBehaviour
 
 
     void OnTriggerEnter(Collider other)
-    {
-        // other.gameObject.layer.ToString();
-        // Debug.Log("Collider Layer: " + other.gameObject.layer.ToString() + " Tag : " + other.tag);
-        // if (other.tag.Equals("Finish"))
-        FindObjectOfType<GameManager>().CompleteLevel();
+    {        FindObjectOfType<GameManager>().CompleteLevel();
     }
 }

@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Collections;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,6 +24,9 @@ public class GameManager : MonoBehaviour
 
     private float score;
 
+    private bool isCoroutineExecuting = false;
+
+    public PlayerMovement m_PlayerMovement;
 
 
     public bool HasGameOver()
@@ -32,10 +37,8 @@ public class GameManager : MonoBehaviour
 
     public void GameStart()
     {
-        // Debug.Log("Game Start");
+        Debug.Log("Game Start");
         m_HasGameOver = false;
-        // Load First Scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 
     }
 
@@ -58,7 +61,7 @@ public class GameManager : MonoBehaviour
 
     void Restart()
     {
-        
+        Debug.Log("Game Re-Start");
         m_HasGameOver = false;
         m_GameOverUI.SetActive(false);
         m_ScoreText.gameObject.SetActive(true);
@@ -68,13 +71,17 @@ public class GameManager : MonoBehaviour
 
     public void CompleteLevel()
     {
+        Debug.Log("Game Complete level");
+        m_PlayerMovement.enabled = false;
         m_CompleteLevelUI.SetActive(true);
+        Invoke("LoadNextLevel", m_RestartDelay);
+        
     }
 
-    void LoadLevel(string levelName)
+    void LoadNextLevel()
     {
-        m_HasGameOver = false;
-        SceneManager.LoadScene(levelName);
+        Debug.Log("Game Load Next level");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     void Update()
@@ -87,17 +94,18 @@ public class GameManager : MonoBehaviour
     }
 
 
-
-    public void PlayAgain(){
-        Debug.Log("Play Again");
-
-        // SceneManager.LoadScene(SceneManager.GetActiveScene().);
+    IEnumerator ExecuteAfterTime(float time, Action task)
+    {
+        if (isCoroutineExecuting)
+            yield break;
+        isCoroutineExecuting = true;
+        yield return new WaitForSeconds(time);
+        task();
+        isCoroutineExecuting = false;
     }
 
-    public void Quit(){
-        Debug.Log("Quit");
-        Application.Quit();
-    }
+
+
 }
 
 
